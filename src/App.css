@@ -2,7 +2,7 @@ body {
   font-family: poppins;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to right, rgb(59, 49, 125), rgb(60, 107, 202), rgb(158, 132, 196), rgb(67, 100, 165), rgb(93, 76, 191), rgb(46, 42, 97), rgb(58, 49, 121), rgb(91, 54, 146), rgb(124, 108, 227));
+  background: linear-gradient(to right, rgb(153, 144, 211), rgb(60, 107, 202), rgb(158, 132, 196), rgb(67, 100, 165), rgb(93, 76, 191), rgb(46, 42, 97), rgb(58, 49, 121), rgb(91, 54, 146), rgb(124, 108, 227));
   background-size: 400% 100%; /* Adjusted to 200% 100% for a smoother effect */
   animation: gradientChange 20s linear infinite;
 }

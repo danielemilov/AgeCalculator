@@ -8,7 +8,7 @@ const AppWrapper = styled.div`
   max-width: 600px;
   margin: 3rem auto;
   padding: 8rem;
-  background-color: #0d009d53;
+  background-color: #8f8ca752;
   color: white;
   text-align: center;
   border-radius:45px;
@@ -74,7 +74,7 @@ const ErrorMessage = styled.p`
 
 const AgeMessage = styled.h2`
   margin-top: 20px;
-  background-color: #4caf50;
+  background-color: #000000;
   color: #fff;
   padding: 10px;
   border-radius: 4px;
