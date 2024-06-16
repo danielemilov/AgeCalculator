@@ -194,7 +194,7 @@ const App = () => {
               <AgeMessage>Happy Birthday!</AgeMessage>
               <Confetti />
               <AudioElement ref={audioRef} autoPlay>
-                <source src="../src/assets/Happy.mp3" type="audio/mpeg" />
+                <source src="/assets/Happy.mp3" type="audio/mpeg" />
               </AudioElement>
             </>
           )}
