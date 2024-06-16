@@ -11,7 +11,7 @@ const AppWrapper = styled.div`
   background-color: #8f8ca752;
   color: white;
   text-align: center;
-  border-radius:45px;
+  border-radius: 45px;
   box-shadow: 0 0 10px rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
@@ -21,22 +21,19 @@ const AppWrapper = styled.div`
     padding-top: 10rem;
     padding: 3rem;
     margin: 5rem auto;
-
   }
 `;
 
 const Title = styled.h1`
   color: white;
   text-align: center;
-
-
 `;
 
 const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Label = styled.label`
@@ -90,6 +87,7 @@ const App = () => {
   const [age, setAge] = useState(null);
   const [error, setError] = useState('');
   const [isBirthday, setIsBirthday] = useState(false);
+  const [daysUntilBirthday, setDaysUntilBirthday] = useState(null);
   const audioRef = useRef(null);
 
   const handleInputChange = (e) => {
@@ -101,6 +99,7 @@ const App = () => {
     if (!birthdate) {
       setError('Please enter a valid birthdate.');
       setAge(null);
+      setDaysUntilBirthday(null);
       return;
     }
 
@@ -108,6 +107,7 @@ const App = () => {
     if (isNaN(birthDate.getTime())) {
       setError('Please enter a valid birthdate.');
       setAge(null);
+      setDaysUntilBirthday(null);
       return;
     }
 
@@ -118,12 +118,14 @@ const App = () => {
     if (birthDate > today) {
       setError('Birthdate cannot be in the future.');
       setAge(null);
+      setDaysUntilBirthday(null);
       return;
     }
 
     if (birthDate < maxAgeDate) {
       setError('Age cannot be more than 120 years.');
       setAge(null);
+      setDaysUntilBirthday(null);
       return;
     }
 
@@ -140,8 +142,15 @@ const App = () => {
     if (birthDate.getMonth() === today.getMonth() && birthDate.getDate() === today.getDate()) {
       setIsBirthday(true);
       playHappyBirthdaySong();
+      setDaysUntilBirthday(0);
     } else {
       setIsBirthday(false);
+      const nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+      if (nextBirthday < today) {
+        nextBirthday.setFullYear(today.getFullYear() + 1);
+      }
+      const daysUntilBirthday = Math.ceil((nextBirthday - today) / (1000 * 60 * 60 * 24));
+      setDaysUntilBirthday(daysUntilBirthday);
     }
   };
 
@@ -168,40 +177,44 @@ const App = () => {
 
   return (
     <>
-    <div className="wrapper">
-    <h2>"Calculate Your Age, Not Your Calories - It's Free!" LMAO</h2>
+      <div className="wrapper">
+        <h2>Math Not Your Thing? Find Your Age Here!
+        </h2>
       </div>
-    <AppWrapper>
-      <Title>AGE CALCULATOR</Title>
-      <FormWrapper onSubmit={handleSubmit}>
-        <Label>
-          Enter your birthdate:
-          <Input
-            type="date"
-            value={birthdate}
-            onChange={handleInputChange}
-            placeholder="YYYY-MM-DD"
-          />
-        </Label>
-        <Button type="submit">Calculate Age</Button>
-      </FormWrapper>
+      <AppWrapper>
+        <Title>AGE CALCULATOR</Title>
+        <FormWrapper onSubmit={handleSubmit}>
+          <Label>
+            Enter your birthdate:
+            <Input
+              type="date"
+              value={birthdate}
+              onChange={handleInputChange}
+              placeholder="YYYY-MM-DD"
+            />
+          </Label>
+          <Button type="submit">Calculate Age</Button>
+        </FormWrapper>
 
-      {age !== null && !isNaN(age) && (
-        <>
-          <AgeMessage>Your age is: {age}</AgeMessage>
-          {isBirthday && (
-            <>
-              <AgeMessage>Happy Birthday!</AgeMessage>
-              <Confetti />
-              <AudioElement ref={audioRef} autoPlay>
-                <source src="/assets/Happy.mp3" type="audio/mpeg" />
-              </AudioElement>
-            </>
-          )}
-        </>
-      )}
-      {error && <ErrorMessage>{error}</ErrorMessage>}
-    </AppWrapper>
+        {age !== null && !isNaN(age) && (
+          <>
+            <AgeMessage>Your age is: {age}</AgeMessage>
+            {!isBirthday && daysUntilBirthday !== null && (
+              <AgeMessage>Days until your next birthday: {daysUntilBirthday}</AgeMessage>
+            )}
+            {isBirthday && (
+              <>
+                <AgeMessage>Happy Birthday!</AgeMessage>
+                <Confetti />
+                <AudioElement ref={audioRef} autoPlay>
+                  <source src="/assets/Happy.mp3" type="audio/mpeg" />
+                </AudioElement>
+              </>
+            )}
+          </>
+        )}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+      </AppWrapper>
     </>
   );
 };
